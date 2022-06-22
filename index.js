@@ -27,3 +27,4 @@ mongoose.connect('mongodb://0.0.0.0:27017/Blog')
         console.log("Connected to the Database and listening to localhost 5000")
     )
     .catch((err) => console.log(err));
+    console.log("hello")
