@@ -45,7 +45,7 @@ const addBlog = async (req, res, next) => {
         content,
         image,
         tag,
-        postedBy
+        user
     });
     try {
         await blog.save();
@@ -63,6 +63,7 @@ const addBlog = async (req, res, next) => {
     return res.status(200).json({ blog })
 };
 
+//id:blog unique id
 const updateBlog = async (req,res,next) => {
     const {title, content, image, tag } = req.body;
     const blogId = req.params.id;
@@ -112,10 +113,28 @@ const deleteBlog = async(req,res,next) => {
     return res.status(200).json({message:"Successfully deleted"})
 }
 
+const myBlog = async (req, res, next) => {
+    let blogs;
+    try {
+        blogs = await Blog.aggregate([
+            {
+                $match:{}
+            }
+        ])
+    } catch (err) {
+        return console.log(err);
+    }
+    if (!blogs) {
+        return res.status(404).json({ message: "No blogs found" })
+    }
+    return res.status(200).json({ blogs })
+}
+
 module.exports = {
     getBlogs: getAllBlogs,
     add: addBlog,
     update: updateBlog,
     myBlog: getById,
-    deleteBlog: deleteBlog
+    deleteBlog: deleteBlog,
+    myBlog:myBlog
 }

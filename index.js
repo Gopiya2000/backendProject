@@ -19,12 +19,22 @@ app.use(express.json());
 
 app.use("/api/user", router);
 app.use("/api/blog", blogRouter);
-app.use("/api/login/profile", profileRouter);
+app.use("/api/profile", profileRouter);
 
-mongoose.connect('mongodb://0.0.0.0:27017/Blog')
-    .then(() => app.listen(5000))
-    .then(() =>
-        console.log("Connected to the Database and listening to localhost 5000")
-    )
-    .catch((err) => console.log(err));
-    console.log("hello")
+mongoose.connect("mongodb+srv://gopiya:pG3OxWsIfCllETX4@cluster0.tzaeypf.mongodb.net/BlogWebsite?retryWrites=true&w=majority")
+.then(() => app.listen(4567))
+.then(() =>
+    console.log("Connected to the Database and listening to localhost 4567")
+)
+.catch((err) => console.log(err));
+
+    // .then(() =>
+    //     console.log("Connected to the Database")
+    // )
+    // .then(() => app.listen(4567,console.log("Listening to port 4000")))
+    // .catch((err) => console.log(err));
+    
+    
+    //console.log("hello")
+
+    //app.get('/',(req,res) =>  res.send("welcome to port 8000"))

@@ -1,7 +1,10 @@
 var User = require('../model/User');
 var blogs = require('./blog-controller');
-var blogs = require('./profile-controller');
+var profile = require('./profile-controller');
 var bcrypt = require('bcryptjs');
+const { validateName, validateEmail, validateUsername, validateMobile, validateDate, validatePassword, validateConfirm } = require('./Validation')
+
+
 const getAllUser = async (req, res, next) => {
     let users;
     try {
@@ -16,18 +19,31 @@ const getAllUser = async (req, res, next) => {
 };
 
 const signup = async (req, res, next) => {
-    const { name, email, username, mobile, date, password, confirm ,blogs} = req.body;
+    const { name, email, username, mobile, date, password, confirm, blogs } = req.body;
 
-    let existingUser;
-    try {
-        existingUser = await User.findOne({ username });
-    } catch (err) {
-        console.log(err);
-    }
-    if (existingUser) {
-        return res.status(400).json({ message: "User already exists.Login instead." })
-    }
-    if (password == confirm) {
+    const nameResult = validateName(name, 1)
+    const emailResult = validateEmail(email, 1)
+    const usernameResult = validateUsername(username, 1)
+    const mobileResult = validateMobile(mobile, 1)
+    const dateResult = validateDate(date, 1)
+    const passwordResult = validatePassword(password, 1)
+    const confirmResult = validateConfirm(password,confirm)
+
+    console.log(nameResult, emailResult, usernameResult, mobileResult, dateResult, passwordResult,confirmResult)
+    
+    if (nameResult == true && emailResult == true && usernameResult == true && mobileResult == true && dateResult == true && passwordResult == true && confirmResult == true)
+    
+    {
+        let existingUser;
+        try {
+            existingUser = await User.findOne({ username });
+        } catch (err) {
+            console.log(err);
+        }
+        if (existingUser) {
+            return res.status(400).json({ message: "User already exists.Login instead." })
+        }
+        //if (password == confirm) {
         const hashedPassword = bcrypt.hashSync(password, 12);
         const hashedConfirm = bcrypt.hashSync(confirm, 12);
 
@@ -39,8 +55,8 @@ const signup = async (req, res, next) => {
             date,
             password: hashedPassword,
             confirm: hashedConfirm,
-            blogs:[],
-            //profile:[]
+            // blogs:[],
+            // profile:[]
         });
 
         try {
@@ -50,9 +66,7 @@ const signup = async (req, res, next) => {
         }
         return res.status(201).json({ user })
     }
-    else {
-        return console.log("Both Password and confirm password should be same.")
-    }
+    return res.status(404).json({ message: "Unable to add user", errors: { name: nameResult, email: emailResult, username: usernameResult, mobile: mobileResult, date: dateResult, password: passwordResult ,confirm : confirmResult} })
 };
 
 

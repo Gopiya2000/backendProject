@@ -24,6 +24,9 @@ const blogSchema = new Schema({
     type: String,
     required: true
   }],
+  // comment: {
+  //   type: String,
+  // },
   user: {
     type:mongoose.Types.ObjectId,
     ref:"User",
@@ -31,5 +34,8 @@ const blogSchema = new Schema({
   }
 });
 module.exports = mongoose.model("Blog", blogSchema)
+
+
+
 
 

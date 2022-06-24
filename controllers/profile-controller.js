@@ -105,7 +105,7 @@ const newProfile = async (req, res, next) => {
             bio,
             user
         });
-
+  
         try {
             await profile.save();
         } catch (err) {

@@ -12,7 +12,7 @@ const userSchema = new Schema({
         trim: true,
         lowercase: true,
         unique: true,
-        required: true,
+        required: true
     },
     username: {
         type: String,
@@ -20,12 +20,12 @@ const userSchema = new Schema({
         unique: true
     },
     mobile: {
-        type: Number,
+        type: String,
         required: true,
         unique: true,
     },
     date: {
-        type: Date,
+        type: String,
         trim: true
     },
     password: {
@@ -37,7 +37,8 @@ const userSchema = new Schema({
     confirm: {
         type: String,
         required: true
-    },
+    }
+    //,
     // picture: {
     //     type: String,
     //     required: true
@@ -46,11 +47,16 @@ const userSchema = new Schema({
     //     type: String,
     //     required:true
     //   },
-    blogs:[{
-        type:mongoose.Types.ObjectId,
-        ref:"Blog",
-        required:true
-}]
+//     blogs:[{
+//         type:mongoose.Types.ObjectId,
+//         ref:"Blog",
+//         required:true
+// }],
+// profile:[{
+//     type:mongoose.Types.ObjectId,
+//     ref:"Profile",
+//     required:true
+// }],
 });
 
 // //Secure Password
@@ -75,3 +81,5 @@ const userSchema = new Schema({
 
 module.exports = mongoose.model("User", userSchema);
 
+
+//db.blog.find({userid:})
