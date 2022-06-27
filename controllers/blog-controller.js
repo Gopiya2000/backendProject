@@ -1,4 +1,4 @@
-// const multer = require("multer");
+ const multer = require("multer");
 // const fs = require('fs');
 const mongoose = require("mongoose");
 const Blog = require("../model/Blog");
@@ -29,6 +29,45 @@ const getAllBlogs = async (req, res, next) => {
 
 // const upload = multer({storage:storage})
 
+// storage engine for multer
+const storageEngine = multer.diskStorage ({
+    destination: './public/uploads/',
+    filename: function (req, file, callback) {
+      callback (
+        null,
+        file.fieldname + '-' + Date.now () + path.extname (file.originalname)
+      );
+    },
+  });
+// file filter for multer
+const fileFilter = (req, file, callback) => {
+    let pattern = /jpg|png/; // reqex
+  
+    if (pattern.test (path.extname (file.originalname))) {
+      callback (null, true);
+    } else {
+      callback ('Error: not a valid file');
+    }
+  };
+// initialize multer
+const upload = multer ({
+    storage: storageEngine,
+    fileFilter  
+  });
+
+  // routing
+  const uploadFile = (req,res) => {
+    try{
+        console.log(req.file)
+        res.json (req.file).status (200)
+    }
+    catch(err){
+        return console.log(err);
+    }
+  }
+
+
+
 const addBlog = async (req, res, next) => {
     const { title, content, image, tag ,user} = req.body;
     let existingUser;
@@ -43,7 +82,7 @@ const addBlog = async (req, res, next) => {
     const blog = new Blog({
         title,
         content,
-        image,
+        image : upload.single ('uploadedFile'),
         tag,
         user
     });
@@ -113,28 +152,26 @@ const deleteBlog = async(req,res,next) => {
     return res.status(200).json({message:"Successfully deleted"})
 }
 
-const myBlog = async (req, res, next) => {
-    let blogs;
-    try {
-        blogs = await Blog.aggregate([
-            {
-                $match:{}
-            }
-        ])
-    } catch (err) {
+const myBlog = async (req,res,next) => {
+    const user = req.params.id;
+    //console.log(user);
+    let blog;
+    try{
+        blog = await Blog.find({user})
+    }catch(err){
         return console.log(err);
     }
-    if (!blogs) {
-        return res.status(404).json({ message: "No blogs found" })
+    if(!blog){
+        return res.status(404).json({message:"No Blogs found"})
     }
-    return res.status(200).json({ blogs })
+    return res.status(200).json({blog})
 }
 
 module.exports = {
     getBlogs: getAllBlogs,
     add: addBlog,
     update: updateBlog,
-    myBlog: getById,
+    getById: getById,
     deleteBlog: deleteBlog,
     myBlog:myBlog
 }

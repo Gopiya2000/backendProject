@@ -5,6 +5,7 @@ const bodyParser = require ('body-parser');
 const cors = require ('cors');
 const path = require ('path');
 const multer = require ('multer');
+var User = require('../model/User');
 // const model = require("./model")
 // const File = mongoose.model("file");
 // const multer = require("multer");
@@ -132,8 +133,23 @@ const newProfile = async (req, res, next) => {
       return res.status(200).json({ profile })
     };
 
+    const myProfile = async (req,res,next) => {
+      const user = req.params.id;
+      let profile;
+      try{
+          profile = await Profile.find({user})
+      }catch(err){
+          return console.log(err);
+      }
+      if(!profile){
+          return res.status(404).json({message:"No Profile found"})
+      }
+      return res.status(200).json({profile})
+  }
+
     module.exports = {
         getProfile: getProfile,
         newProfile: newProfile,
-        updateProfile:updateProfile
+        updateProfile:updateProfile,
+        myProfile:myProfile
     }
