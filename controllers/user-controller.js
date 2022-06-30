@@ -3,6 +3,8 @@ var blogs = require('./blog-controller');
 var profile = require('./profile-controller');
 var bcrypt = require('bcryptjs');
 const { validateName, validateEmail, validateUsername, validateMobile, validateDate, validatePassword, validateConfirm } = require('./Validation')
+const sendToken = require('../utils/jwtToken')
+require('dotenv').config()
 
 
 const getAllUser = async (req, res, next) => {
@@ -36,6 +38,7 @@ const signup = async (req, res, next) => {
     {
         let existingUser;
         try {
+            let options = { abortEarly : false }
             existingUser = await User.findOne({ username });
         } catch (err) {
             console.log(err);
@@ -64,7 +67,9 @@ const signup = async (req, res, next) => {
         } catch (err) {
             return console.log(err);
         }
-        return res.status(201).json({ user })
+        const message = "Successfully signed in"
+        sendToken(existingUser, 201, res, message)
+
     }
     return res.status(404).json({ message: "Unable to add user", errors: { name: nameResult, email: emailResult, username: usernameResult, mobile: mobileResult, date: dateResult, password: passwordResult ,confirm : confirmResult} })
 };
@@ -74,6 +79,7 @@ const login = async (req, res, next) => {
     const { username, password } = req.body;
     let existingUser;
     try {
+        let options = { abortEarly : false }
         existingUser = await User.findOne({ username });
     } catch (err) {
         console.log(err);
@@ -85,7 +91,8 @@ const login = async (req, res, next) => {
     if (!isPasswordCorrect) {
         return res.status(400).json({ message: "Incorrect Password" })
     }
-    return res.status(200).json({ message: "Login Successfull" })
+    const message = "Successfully logged in"
+    sendToken(existingUser, 200, res, message); 
 
 }
 
