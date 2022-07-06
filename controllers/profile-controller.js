@@ -38,41 +38,41 @@ var User = require('../model/User');
 //  }
 
 // storage engine for multer
-const storageEngine = multer.diskStorage ({
-    destination: './public/uploads/',
-    filename: function (req, file, callback) {
-      callback (
-        null,
-        file.fieldname + '-' + Date.now () + path.extname (file.originalname)
-      );
-    },
-  });
-// file filter for multer
-const fileFilter = (req, file, callback) => {
-    let pattern = /jpg|png/; // reqex
+// const storageEngine = multer.diskStorage ({
+//     destination: './public/uploads/',
+//     filename: function (req, file, callback) {
+//       callback (
+//         null,
+//         file.fieldname + '-' + Date.now () + path.extname (file.originalname)
+//       );
+//     },
+//   });
+// // file filter for multer
+// const fileFilter = (req, file, callback) => {
+//     let pattern = /jpg|png/; // reqex
   
-    if (pattern.test (path.extname (file.originalname))) {
-      callback (null, true);
-    } else {
-      callback ('Error: not a valid file');
-    }
-  };
-// initialize multer
-const upload = multer ({
-    storage: storageEngine,
-    fileFilter  
-  });
+//     if (pattern.test (path.extname (file.originalname))) {
+//       callback (null, true);
+//     } else {
+//       callback ('Error: not a valid file');
+//     }
+//   };
+// // initialize multer
+// const upload = multer ({
+//     storage: storageEngine,
+//     fileFilter  
+//   });
 
-  // routing
-  const uploadFile = (req,res) => {
-    try{
-        console.log(req.file)
-        res.json (req.file).status (200)
-    }
-    catch(err){
-        return console.log(err);
-    }
-  }
+//   // routing
+//   const uploadFile = (req,res) => {
+//     try{
+//         console.log(req.file)
+//         res.json (req.file).status (200)
+//     }
+//     catch(err){
+//         return console.log(err);
+//     }
+//   }
 
       
 

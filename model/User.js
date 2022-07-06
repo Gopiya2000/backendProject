@@ -82,6 +82,7 @@ const userSchema = new Schema({
 // });
 
 userSchema.methods.generateJsonWebToken = function(){
+    console.log("hello")
     return jwt.sign({id:this._id},process.env.SECRET_KEY,{
         expiresIn:'5m',
     });

@@ -3,8 +3,8 @@ var { getBlogs, add ,update, getById, deleteBlog , myBlog } = require('../contro
 const isAuthenticatedUser = require('../middlewares/auth')
 const blogRouter = express.Router();
 
-blogRouter.get("/", isAuthenticatedUser, getBlogs);
-blogRouter.post("/add", isAuthenticatedUser, add);
+blogRouter.get("/", getBlogs);
+blogRouter.post("/add", add);
 blogRouter.put("/update/:id", isAuthenticatedUser,update);
 blogRouter.get("/:id", isAuthenticatedUser,getById);
 blogRouter.delete("/:id", isAuthenticatedUser,deleteBlog);
