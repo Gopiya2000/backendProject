@@ -15,12 +15,12 @@ const blogSchema = new Schema({
   },
   image:{
       publicId: {
-      type: String,
-      //required: true,
-      },
+      type: String
+      }
+      ,
       url: {
       type: String,
-     // required: true,
+      required: true,
       },
 },
   tag: [{
@@ -31,11 +31,15 @@ const blogSchema = new Schema({
   //   type: String,
   // },
   user: {
-    type:mongoose.Types.ObjectId,
+    type:mongoose.Schema.Types.ObjectId,
     ref:"User",
     required:true
   }
-});
+ },
+// {
+//   timestamps: true,
+// }
+);
 module.exports = mongoose.model("Blog", blogSchema)
 
 

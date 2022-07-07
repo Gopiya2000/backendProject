@@ -70,15 +70,21 @@ const getAllBlogs = async (req, res, next) => {
 
 
 const addBlog = async (req, res, next) => {
-    console.log(typeof(JSON.stringify(req.body.image)));
+    console.log("req url : ",req.body.image);
     console.log("req",req.body);
-        const myCloud =  cloudinary.v2.uploader.upload(JSON.stringify(req.body.image), {
+    let img = req.body.image.replace("C:\\fakepath\\", "");
+    console.log("modified : ",img)
+        const myCloud = await  cloudinary.v2.uploader.upload((img), {
         folder: "blogs",
         width: 150
-    })
+    },(error, result)=>{
+        console.log( "res : ",result);
+    console.log("error : ",error) }
+    );
 // catch(err){
 //       console.log(err);
 // };
+console.log("myCloud",myCloud);
     const { title, content, image, tag, user } = req.body;
     let existingUser;
     try {
@@ -93,12 +99,13 @@ const addBlog = async (req, res, next) => {
         title,
         content,
         image:{
-            publicId:image.publicId,
-            url: image.url
+            publicId:myCloud.public_id,
+            url: myCloud.url
         },
         //: upload.single ('uploadedFile'),
         tag,
         user
+        //:req.users.id
     })
 
     try {
