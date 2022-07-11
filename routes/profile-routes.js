@@ -7,8 +7,8 @@ const profileRouter = express.Router();
 
   
 profileRouter.get("/myProfile/:id", isAuthenticatedUser,myProfile);
-profileRouter.get("/myProfile", isAuthenticatedUser,getProfile);
-profileRouter.post("/addProfile", isAuthenticatedUser,newProfile);
+profileRouter.get("/myProfile",getProfile);
+profileRouter.post("/addProfile",newProfile);
 
 profileRouter.get("/",viewProfile);
 profileRouter.put("/updateProfile/:id",updateProfile);

@@ -104,8 +104,8 @@ const viewProfile=async(req,res,next)=>{
 }
 
 const newProfile = async (req, res, next) => {
-    const { bio} = req.body;
-
+    const { bio,user} = req.body;
+    console.log("bio",req.body)
     let existingProfile;
     try {
         existingProfile = await Profile.findOne({ bio });
@@ -118,7 +118,7 @@ const newProfile = async (req, res, next) => {
         const profile = new Profile({
             //picture:upload.single ('uploadedFile'),
             bio,
-            //user
+            user
         });
   
         try {
