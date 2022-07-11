@@ -14,7 +14,7 @@ const blogSchema = new Schema({
     required: true
   },
   image:{
-      publicId: {
+      public_id: {
       type: String
       }
       ,

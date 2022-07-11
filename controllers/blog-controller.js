@@ -74,13 +74,14 @@ const addBlog = async (req, res, next) => {
     console.log("req",req.body);
     let img = req.body.image.replace("C:\\fakepath\\", "");
     console.log("modified : ",img)
-        const myCloud = await  cloudinary.v2.uploader.upload((img), {
-        folder: "blogs",
-        width: 150
-    },(error, result)=>{
-        console.log( "res : ",result);
-    console.log("error : ",error) }
-    );
+    //     const myCloud = await  cloudinary.v2.uploader.upload((img), {
+    //     folder: "blogs",
+    //     width: 150
+    // },(error, result)=>{
+    //     console.log( "res : ",result);
+    // console.log("error : ",error) }
+    // );
+
 // catch(err){
 //       console.log(err);
 // };
@@ -88,6 +89,11 @@ console.log("myCloud",myCloud);
     const { title, content, image, tag, user } = req.body;
     let existingUser;
     try {
+        const myCloud = await cloudinary.uploader.upload(image,{
+            folder: "blogImage",
+            width:300,
+            crop:"scale"
+        })
         existingUser = await User.findById(user);
     } catch (err) {
         return console.log(err);
