@@ -70,10 +70,10 @@ const getAllBlogs = async (req, res, next) => {
 
 
 const addBlog = async (req, res, next) => {
-    console.log("req url : ",req.body.image);
+    console.log("req url : ",req.body.news);
     console.log("req",req.body);
-    let img = req.body.image.replace("C:\\fakepath\\", "");
-    console.log("modified : ",img)
+   // let img = req.body.news.replace("C:\\fakepath\\", "");
+    //console.log("modified : ",img)
     //     const myCloud = await  cloudinary.v2.uploader.upload((img), {
     //     folder: "blogs",
     //     width: 150
@@ -85,15 +85,10 @@ const addBlog = async (req, res, next) => {
 // catch(err){
 //       console.log(err);
 // };
-console.log("myCloud",myCloud);
-    const { title, content, image, tag, user } = req.body;
+//console.log("myCloud",myCloud);
+    const { title, content,image, tag, user } = req.body;
     let existingUser;
     try {
-        const myCloud = await cloudinary.uploader.upload(image,{
-            folder: "blogImage",
-            width:300,
-            crop:"scale"
-        })
         existingUser = await User.findById(user);
     } catch (err) {
         return console.log(err);
@@ -104,11 +99,7 @@ console.log("myCloud",myCloud);
     const blog = new Blog({
         title,
         content,
-        image:{
-            publicId:myCloud.public_id,
-            url: myCloud.url
-        },
-        //: upload.single ('uploadedFile'),
+        image,
         tag,
         user
         //:req.users.id
@@ -132,23 +123,27 @@ console.log("myCloud",myCloud);
 
 //id:blog unique id
 const updateBlog = async (req, res, next) => {
-    const { title, content, image, tag } = req.body;
+    const { title, content,image,  tag } = req.body;
     const blogId = req.params.id;
     let blog;
     try {
         blog = await Blog.findByIdAndUpdate(blogId, {
             title,
             content,
-            //image,
+            image,
             tag
         })
+        await blog.save()
+        blog = await Blog.findById(blogId)
+               console.log("blog updated : ",blog);
+               return res.status(200).json({blog})
     } catch (err) {
         return console.log(err);
     }
-    if (!blog) {
-        return res.status(500).json({ message: "Unable to update the blog" })
-    }
-    return res.status(200).json({ blog })
+    // if (!blog) {
+    //     return res.status(500).json({ message: "Unable to update the blog" })
+    // }
+    // return res.status(200).json({ blog })
 };
 
 const getById = async (req, res, next) => {

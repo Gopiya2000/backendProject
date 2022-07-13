@@ -77,7 +77,7 @@ var User = require('../model/User');
       
 
 const getProfile = async (req, res, next) => {
-    const { bio,user} = req.body;
+    const { bio,image,user} = req.body;
     let profile;
     try {
         profile = await Profile.findOne(user);
@@ -104,7 +104,7 @@ const viewProfile=async(req,res,next)=>{
 }
 
 const newProfile = async (req, res, next) => {
-    const { bio,user} = req.body;
+    const { image,bio,user} = req.body;
     console.log("bio",req.body)
     let existingProfile;
     try {
@@ -116,7 +116,7 @@ const newProfile = async (req, res, next) => {
         return res.status(400).json({ message: "Profile already created" })
     }
         const profile = new Profile({
-            //picture:upload.single ('uploadedFile'),
+            image,
             bio,
             user
         });
@@ -147,13 +147,13 @@ const newProfile = async (req, res, next) => {
     //   return res.status(200).json({ profile })
     // };
     const updateProfile = async (req,res,next) => {
-        const {bio } = req.body;
+        const {bio ,image} = req.body;
         const profileID = req.params.id;
         console.log("profile id",req.params.id);
         let profile;
         try{
             profile = await Profile.findByIdAndUpdate(profileID,{
-                //picture,
+                image,
                 bio
              })
              await profile.save()

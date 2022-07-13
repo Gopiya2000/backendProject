@@ -5,9 +5,9 @@ const blogRouter = express.Router();
 
 blogRouter.get("/", getBlogs);
 blogRouter.post("/add", add);
-blogRouter.put("/update/:id", isAuthenticatedUser,update);
-blogRouter.get("/:id", isAuthenticatedUser,getById);
-blogRouter.delete("/:id", isAuthenticatedUser,deleteBlog);
-blogRouter.get("/myBlog/:id", isAuthenticatedUser,myBlog);
+blogRouter.put("/update/:id",update);
+blogRouter.get("/:id",getById);
+blogRouter.delete("/:id",deleteBlog);
+blogRouter.get("/myBlog/:id",myBlog);
 
 module.exports = blogRouter;

@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-//var ObjectId = require('mongoose').ObjectId;
 
 var User = require('../model/User')
 const Schema = mongoose.Schema;
@@ -14,14 +13,8 @@ const blogSchema = new Schema({
     required: true
   },
   image:{
-      public_id: {
-      type: String
-      }
-      ,
-      url: {
-      type: String,
-      required: true,
-      },
+    type : String,
+    required : true
 },
   tag: [{
     type: String,
@@ -35,6 +28,11 @@ const blogSchema = new Schema({
     ref:"User",
     required:true
   }
+  // ,
+  // createdAt: {
+  //   type: Date,
+  //   default: new Date(),
+  // }
  },
 // {
 //   timestamps: true,

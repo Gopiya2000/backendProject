@@ -3,15 +3,10 @@ var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const profileSchema = new Schema({
-  // picture: {
-  //   type: String,
-  //   required: true
-    
-  //    //meta_data:{}
-
-  //   // data:Buffer,
-  //   // contentType:String    
-  // },
+  image: {
+    type: String,
+    required: true  
+  },
   bio: {
     type: String,
     required:true
