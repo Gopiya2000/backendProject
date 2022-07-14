@@ -1,13 +1,13 @@
 var express = require('express');
-var { getBlogs, add ,update, getById, deleteBlog , myBlog } = require('../controllers/blog-controller')
+var { getBlogs, add ,update, myBlogs, deleteBlog , myBlog } = require('../controllers/blog-controller')
 const isAuthenticatedUser = require('../middlewares/auth')
 const blogRouter = express.Router();
 
 blogRouter.get("/", getBlogs);
 blogRouter.post("/add", add);
 blogRouter.put("/update/:id",update);
-blogRouter.get("/:id",getById);
+blogRouter.get("/:id",myBlogs);
 blogRouter.delete("/:id",deleteBlog);
-blogRouter.get("/myBlog/:id",myBlog);
+//blogRouter.get("/myBlog",myBlog);
 
 module.exports = blogRouter;

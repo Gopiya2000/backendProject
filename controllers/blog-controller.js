@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 const Blog = require("../model/Blog");
 //const user = require("./user-controller");
 var User = require('../model/User');
-const cloudinary = require('cloudinary')
+const cloudinary = require('cloudinary');
+const Profile =  require('../model/Profile')
 
 const getAllBlogs = async (req, res, next) => {
     let blogs;
@@ -147,10 +148,11 @@ const updateBlog = async (req, res, next) => {
 };
 
 const getById = async (req, res, next) => {
-    const id = req.params.id;
+    const userId = req.params.id;
+    console.log(userId)
     let blog;
     try {
-        blog = await Blog.findById(id)
+        blog = await Blog.find({user:userId})
     } catch (err) {
         return console.log(err);
     }
@@ -176,11 +178,10 @@ const deleteBlog = async (req, res, next) => {
 }
 
 const myBlog = async (req, res, next) => {
-    const user = req.params.id;
-    //console.log(user);
+    const user = req.body;
     let blog;
     try {
-        blog = await Blog.find({ user })
+        blog = await Blog.find(user)
     } catch (err) {
         return console.log(err);
     }
@@ -194,7 +195,7 @@ module.exports = {
     getBlogs: getAllBlogs,
     add: addBlog,
     update: updateBlog,
-    getById: getById,
+    myBlogs: getById,
     deleteBlog: deleteBlog,
     myBlog: myBlog
 }
