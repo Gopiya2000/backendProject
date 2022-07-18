@@ -162,6 +162,22 @@ const getById = async (req, res, next) => {
     return res.status(200).json({ blog })
 }
 
+const singleBlog = async (req, res, next) => {
+    const id = req.params.id;
+    console.log(id)
+    let blog;
+    try {
+        blog = await Blog.findById(id)
+    } catch (err) {
+        return console.log(err);
+    }
+    if (!blog) {
+        return res.status(404).json({ message: "No Blogs found" })
+    }
+    return res.status(200).json({ blog })
+}
+
+
 const deleteBlog = async (req, res, next) => {
     const id = req.params.id;
     let blog;
@@ -196,6 +212,7 @@ module.exports = {
     add: addBlog,
     update: updateBlog,
     myBlogs: getById,
+    singleBlog : singleBlog,
     deleteBlog: deleteBlog,
     myBlog: myBlog
 }
