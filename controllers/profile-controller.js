@@ -11,7 +11,6 @@ var User = require('../model/User');
 const viewProfile = async (req, res, next) => {
     try {
         let profile;
-        console.log(req.query.user)
         profile = await Profile.find({ user: req.query.user });
         res.json(profile);
     }
@@ -23,7 +22,6 @@ const viewProfile = async (req, res, next) => {
 //add profile
 const newProfile = async (req, res, next) => {
     const { image, bio, user } = req.body;
-    console.log("bio", req.body)
     let existingProfile;
     try {
         existingProfile = await Profile.findOne({ bio });
@@ -51,7 +49,6 @@ const newProfile = async (req, res, next) => {
 const updateProfile = async (req, res, next) => {
     const { bio, image } = req.body;
     const profileID = req.params.id;
-    console.log("profile id", req.params.id);
     let profile;
     try {
         profile = await Profile.findByIdAndUpdate(profileID, {
@@ -60,7 +57,6 @@ const updateProfile = async (req, res, next) => {
         })
         await profile.save()
         profile = await Profile.findById(profileID)
-        console.log("profile updated : ", profile);
         return res.status(200).json({ profile })
     } catch (err) {
         return console.log(err);

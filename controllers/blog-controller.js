@@ -9,7 +9,7 @@ const Profile = require('../model/Profile')
 const getAllBlogs = async (req, res, next) => {
     let blogs;
     try {
-        blogs = await Blog.find().populate("user");
+        blogs = await Blog.find();
     } catch (err) {
         return console.log(err);
     }
@@ -21,8 +21,6 @@ const getAllBlogs = async (req, res, next) => {
 
 //add a new blog
 const addBlog = async (req, res, next) => {
-    console.log("req url : ", req.body.news);
-    console.log("req", req.body);
     const { title, content, image, tag, user } = req.body;
     let existingUser;
     try {
@@ -44,7 +42,6 @@ const addBlog = async (req, res, next) => {
     try {
         await blog.save();
     } catch (err) {
-        console.log(err);
         return res.status(500).json({ message: err })
     }
     return res.status(200).json({ blog })
@@ -64,7 +61,6 @@ const updateBlog = async (req, res, next) => {
         })
         await blog.save()
         blog = await Blog.findById(blogId)
-        console.log("blog updated : ", blog);
         return res.status(200).json({ blog })
     } catch (err) {
         return console.log(err);
@@ -74,7 +70,6 @@ const updateBlog = async (req, res, next) => {
 //get users blogs
 const getById = async (req, res, next) => {
     const userId = req.params.id;
-    console.log(userId)
     let blog;
     try {
         blog = await Blog.find({ user: userId })
@@ -90,7 +85,6 @@ const getById = async (req, res, next) => {
 //get a single blog
 const singleBlog = async (req, res, next) => {
     const id = req.params.id;
-    console.log(id)
     let blog;
     try {
         blog = await Blog.findById(id)

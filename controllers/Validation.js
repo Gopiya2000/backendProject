@@ -40,7 +40,6 @@ const validateConfirm = (password, confirm) => {
     return (password == confirm) ? true : `Both password and confirm password must match`
 }
 
-
 module.exports = {
     validateName,
     validateEmail,
