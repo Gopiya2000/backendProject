@@ -40,55 +40,13 @@ const userSchema = new Schema({
         type: String,
         required: true
     }
-    //,
-    // picture: {
-    //     type: String,
-    //     required: true
-    //   },
-    //   bio: {
-    //     type: String,
-    //     required:true
-    //   },
-//     blogs:[{
-//         type:mongoose.Types.ObjectId,
-//         ref:"Blog",
-//         required:true
-// }],
-// profile:[{
-//     type:mongoose.Types.ObjectId,
-//     ref:"Profile",
-//     required:true
-// }],
 });
 
-// //Secure Password
-// userSchema.pre('save',async(next) => {
-//     if(this.isModified('Password')){
-//         this.Password = bcrypt.hash(this.Password,12)
-//         this.Confirm = bcrypt.hash(this.Confirm,12)
-//     }
-//     next();
-// }
-// )
-
-// userSchema.methods.pre('save',(next) => {
-//     if(this.isModified('Password')){
-//         bcrypt.hash(this.Password,8,(err,hash) => {
-//             if(err) return next(err);
-//             this.Password = hash;
-//             next();
-//         });
-//     }
-// });
-
-userSchema.methods.generateJsonWebToken = function(){
+userSchema.methods.generateJsonWebToken = function () {
     console.log("hello")
-    return jwt.sign({id:this._id},process.env.SECRET_KEY,{
-        expiresIn:'5m',
+    return jwt.sign({ id: this._id }, process.env.SECRET_KEY, {
+        expiresIn: '5m',
     });
 }
 
 module.exports = mongoose.model("User", userSchema);
-
-
-//db.blog.find({userid:})

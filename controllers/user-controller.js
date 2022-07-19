@@ -7,19 +7,7 @@ const sendToken = require('../utils/jwtToken')
 require('dotenv').config()
 
 
-const getAllUser = async (req, res, next) => {
-    let users;
-    try {
-        users = await User.find().populate(users);
-    } catch (err) {
-        console.log(err);
-    }
-    if (!users) {
-        return res.status(404).json({ message: "No Users found " });
-    }
-    return res.status(200).json({ users });
-};
-
+//Signup
 const signup = async (req, res, next) => {
     const { name, email, username, mobile, date, password, confirm, blogs } = req.body;
     console.log("req ", req.body)
@@ -52,8 +40,6 @@ const signup = async (req, res, next) => {
                 date,
                 password: hashedPassword,
                 confirm: hashedConfirm,
-                // blogs:[],
-                // profile:[]
             });
             await user.save();
             const message = "Successfully signed in"
@@ -68,7 +54,7 @@ const signup = async (req, res, next) => {
 
 };
 
-
+//Login
 const login = async (req, res, next) => {
     const { username, password } = req.body;
     let existingUser;
@@ -90,6 +76,7 @@ const login = async (req, res, next) => {
 
 }
 
+//View the user details
 const viewUser = async (req, res, next) => {
     const id = req.params.id;
     let user;
@@ -104,6 +91,7 @@ const viewUser = async (req, res, next) => {
     return res.status(200).json({ user })
 }
 
+//Update the user details
 const updateUser = async (req, res, next) => {
     const { name, email, username, mobile, date, password, confirm } = req.body;
     const nameResult = validateName(name, 1)
@@ -114,66 +102,48 @@ const updateUser = async (req, res, next) => {
     const passwordResult = validatePassword(password, 1)
     const confirmResult = validateConfirm(password, confirm)
 
-    // console.log(nameResult, emailResult, usernameResult, mobileResult, dateResult, passwordResult, confirmResult)
-
     if (nameResult == true && emailResult == true && usernameResult == true && mobileResult == true && dateResult == true && passwordResult == true && confirmResult == true) {
         let user;
-        
+
         let userId = req.params.id;
-        console.log("userId : ",userId);
-        console.log("requested : ",req.body)
+        console.log("userId : ", userId);
+        console.log("requested : ", req.body)
         try {
-        if(userId.length !== 24)
-        throw "Invalid Object Id"
-        user = await User.findById(userId)
-        console.log("user found : ",user);
-        if(user === null)
-        throw "Unable to update this profile"
-        let options = {abortEarly : false}
+            if (userId.length !== 24)
+                throw "Invalid Object Id"
+            user = await User.findById(userId)
+            console.log("user found : ", user);
+            if (user === null)
+                throw "Unable to update this profile"
+            let options = { abortEarly: false }
             const hashedPassword = bcrypt.hashSync(password, 12);
             const hashedConfirm = bcrypt.hashSync(confirm, 12);
-            console.log("hashed password : ",hashedPassword);
+            console.log("hashed password : ", hashedPassword);
             user = await User.findByIdAndUpdate(userId, {
                 name,
                 email,
                 username,
                 mobile,
                 date,
-                password : hashedPassword,
-                confirm : hashedConfirm
+                password: hashedPassword,
+                confirm: hashedConfirm
             })
-                    await user.save()
-                    user = await User.findById(userId)
-                    console.log("user updated : ",user);
-                    return res.status(200).json({user})
-                }
-                catch (err) {
-                    return res.status(404).json({ message: err.message })
-                }
-            }
-            };
-
-    const deleteUser = async(req, res, next) => {
-        const id = req.params.id;
-        let user;
-        try {
-            user = await User.findByIdAndRemove(id);
+            await user.save()
+            user = await User.findById(userId)
+            console.log("user updated : ", user);
+            return res.status(200).json({ user })
         }
         catch (err) {
-            return console.log(err);
+            return res.status(404).json({ message: err.message })
         }
-        if (!user) {
-            return res.status(500).json({ message: "Unable to delete" })
-        }
-        return res.status(200).json({ message: "Successfully deleted" })
     }
+};
 
 
-    module.exports = {
-        getUser: getAllUser,
-        signUp: signup,
-        login: login,
-        viewUser: viewUser,
-        updateUser: updateUser,
-        deleteUser:deleteUser
-    }
+
+module.exports = {
+    signUp: signup,
+    login: login,
+    viewUser: viewUser,
+    updateUser: updateUser
+}

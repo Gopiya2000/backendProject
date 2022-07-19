@@ -12,31 +12,20 @@ const blogSchema = new Schema({
     type: String,
     required: true
   },
-  image:{
-    type : String,
-    required : true
-},
+  image: {
+    type: String,
+    required: true
+  },
   tag: [{
     type: String,
     required: true
   }],
-  // comment: {
-  //   type: String,
-  // },
   user: {
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"User",
-    required:true
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
   }
-  // ,
-  // createdAt: {
-  //   type: Date,
-  //   default: new Date(),
-  // }
- },
-// {
-//   timestamps: true,
-// }
+},
 );
 module.exports = mongoose.model("Blog", blogSchema)
 
