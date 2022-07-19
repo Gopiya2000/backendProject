@@ -5,8 +5,6 @@ require('dotenv').config()
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-const fileUpload = require('express-fileupload')
-const multer = require('multer');
 const router = require('./routes/user-routes');
 const blogRouter = require('./routes/blog-routes');
 const profileRouter = require('./routes/profile-routes');

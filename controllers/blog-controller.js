@@ -1,8 +1,6 @@
-const multer = require("multer");
 const mongoose = require("mongoose");
 const Blog = require("../model/Blog");
 var User = require('../model/User');
-const cloudinary = require('cloudinary');
 const Profile = require('../model/Profile')
 
 //view all blogs of all user

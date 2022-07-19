@@ -1,6 +1,6 @@
 var express = require('express');
 var { getBlogs, add, update, myBlogs, deleteBlog, singleBlog } = require('../controllers/blog-controller')
-const isAuthenticatedUser = require('../middlewares/auth')
+
 const blogRouter = express.Router();
 
 blogRouter.get("/", getBlogs);

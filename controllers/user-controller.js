@@ -1,10 +1,8 @@
-var User = require('../model/User');
-var blogs = require('./blog-controller');
-var profile = require('./profile-controller');
 var bcrypt = require('bcryptjs');
+require('dotenv').config()
+var User = require('../model/User');
 const { validateName, validateEmail, validateUsername, validateMobile, validateDate, validatePassword, validateConfirm } = require('./Validation')
 const sendToken = require('../utils/jwtToken')
-require('dotenv').config()
 
 //Signup
 const signup = async (req, res, next) => {

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-var User = require('../model/User')
 const Schema = mongoose.Schema;
+var User = require('../model/User')
 
 const blogSchema = new Schema({
 	title: {

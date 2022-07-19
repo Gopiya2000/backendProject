@@ -1,11 +1,4 @@
 var Profile = require('../model/Profile');
-var User = require('../model/User');
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const path = require('path');
-const multer = require('multer');
-var User = require('../model/User');
 
 //view profile
 const viewProfile = async (req, res, next) => {
