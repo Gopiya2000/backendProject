@@ -69,6 +69,20 @@ const login = async (req, res, next) => {
 
 }
 
+//Get all users
+const getAllUser = async (req, res, next) => {
+    let users;
+    try {
+        users = await User.find();
+    } catch (err) {
+        console.log(err);
+    }
+    if (!users) {
+        return res.status(404).json({ message: "No Users found " });
+    }
+    return res.status(200).json({ users });
+};
+
 //View the user details
 const viewUser = async (req, res, next) => {
     const id = req.params.id;
@@ -133,6 +147,7 @@ const updateUser = async (req, res, next) => {
 module.exports = {
     signUp: signup,
     login: login,
+    getAllUser : getAllUser,
     viewUser: viewUser,
     updateUser: updateUser
 }

@@ -38,7 +38,8 @@ const userSchema = new Schema({
     confirm: {
         type: String,
         required: true
-    }
+    },
+    
 });
 
 userSchema.methods.generateJsonWebToken = function () {

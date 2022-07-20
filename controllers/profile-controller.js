@@ -1,5 +1,17 @@
 var Profile = require('../model/Profile');
 
+//get all profile 
+const getAllProfile = async (req, res, next) => {
+    try {
+        let profile;
+        profile = await Profile.find().populate("user");
+        res.json(profile);
+    }
+    catch (err) {
+        console.log("err", err);
+    }
+}
+
 //view profile
 const viewProfile = async (req, res, next) => {
     try {
@@ -57,6 +69,7 @@ const updateProfile = async (req, res, next) => {
 }
 
 module.exports = {
+    getAllProfile: getAllProfile,
     newProfile: newProfile,
     updateProfile: updateProfile,
     viewProfile: viewProfile

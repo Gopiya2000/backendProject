@@ -19,11 +19,16 @@ const blogSchema = new Schema({
 		type: String,
 		required: true
 	}],
-	user: [{
+	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "User",
 		required: true
-	}]
+	},
+	profile: {
+		type: mongoose.Types.ObjectId,
+		ref: "Profile",
+		required: true
+	}
 },
 );
 module.exports = mongoose.model("Blog", blogSchema)

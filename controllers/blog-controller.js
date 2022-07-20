@@ -7,7 +7,10 @@ const Profile = require('../model/Profile')
 const getAllBlogs = async (req, res, next) => {
     let blogs;
     try {
-        blogs = await Blog.find();
+        blogs = await Blog.find()
+        .populate("user")
+        .populate("profile")
+       // console.log("blogs :",blogs);
     } catch (err) {
         return console.log(err);
     }
@@ -19,7 +22,7 @@ const getAllBlogs = async (req, res, next) => {
 
 //add a new blog
 const addBlog = async (req, res, next) => {
-    const { title, content, image, tag, user } = req.body;
+    const { title, content, image, tag, user,profile } = req.body;
     let existingUser;
     try {
         existingUser = await User.findById(user);
@@ -34,13 +37,14 @@ const addBlog = async (req, res, next) => {
         content,
         image,
         tag,
-        user
+        user,
+        profile
     })
 
     try {
         await blog.save();
     } catch (err) {
-        return res.status(500).json({ message: err })
+        return res.status(400).json({ message: err })
     }
     return res.status(200).json({ blog })
 };
