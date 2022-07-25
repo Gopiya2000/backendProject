@@ -2,7 +2,8 @@ var bcrypt = require('bcryptjs');
 require('dotenv').config()
 var User = require('../model/User');
 const { validateName, validateEmail, validateUsername, validateMobile, validateDate, validatePassword, validateConfirm } = require('./Validation')
-const sendToken = require('../utils/jwtToken')
+const sendToken = require('../utils/jwtToken');
+const Follow = require('../model/Follow');
 
 //Signup
 const signup = async (req, res, next) => {
@@ -88,7 +89,9 @@ const viewUser = async (req, res, next) => {
     const id = req.params.id;
     let user;
     try {
-        user = await User.findById(id)
+        user = await User.findById(id).populate({path :'follower'})
+        console.log("users details : ",user)
+        
     } catch (err) {
         return console.log(err);
     }
@@ -142,12 +145,39 @@ const updateUser = async (req, res, next) => {
     }
 };
 
+/**My Followers */
+const addMyFollower = async(req, res) => {
+    const {followerId, userId} = req.body
+    let followDetails
+    console.log("req : ",req.body)
+    try{
+        const userFound = await Follow.find({user : userId})
+        console.log("user found : ",userFound)
+        if(userFound)
+        {
+            await Follow.updateOne({user : userId}, {$push : {follower : followerId}})
+        }
+        else
+        {
+            followDetails = new Follow({
+            user : userId,
+            follower : followerId
+             })
+        await followDetails.save()
+        }
+        return res.status(201).json({ message : 'succesfully follower has been added to the profile '})
+    }
+    catch(error){
+        console.log("error : ",error.message)
+    }
 
+}
 
 module.exports = {
     signUp: signup,
     login: login,
     getAllUser : getAllUser,
     viewUser: viewUser,
-    updateUser: updateUser
+    updateUser: updateUser,
+    addMyFollower
 }

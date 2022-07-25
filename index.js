@@ -19,6 +19,7 @@ app.use("/api/user", router);
 app.use("/api/blog", blogRouter);
 app.use("/api/profile", profileRouter);
 
+
 mongoose.connect(process.env.DATABASE_CONNECT_STRING)
     .then(() => {
         console.log("Connected to Database")
